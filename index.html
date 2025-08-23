@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>4画面 起動演出付き</title>
+  <style>
+    /* CSSは省略せずそのまま残しています */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      font-family: 'Arial', sans-serif;
+    }
+    body {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: 50% 50%;
+      height: 100vh;
+    }
+    .section { background-color: #000; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .tv-frame { width: 92%; height: 88%; background: linear-gradient(145deg, #111, #000); border-radius: 20px; box-shadow: 0 0 20px rgba(0, 255, 170, 0.4), inset 0 0 30px rgba(0, 255, 255, 0.1), 0 0 60px rgba(0, 255, 255, 0.1); padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; position: relative; }
+    .tv-frame::before { content: ""; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border: 2px solid #00ffc3; border-radius: 25px; opacity: 0.1; filter: blur(6px); z-index: 0; }
+    .resized-gif { width: 100%; height: 100%; max-height: 90%; object-fit: contain; position: relative; z-index: 1; }
+    .label { color: #00ff88; font-size: 14px; margin-top: 5px; text-align: center; letter-spacing: 1px; position: relative; z-index: 1; }
+    #box-container { display: flex; flex-direction: column; width: 90px; height: 90%; position: relative; z-index: 1; }
+    .wire-box { flex: 1; border: 2px solid #00ff7f; background-color: rgba(0, 255, 0, 0.05); margin: -2px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 10px rgba(0, 255, 128, 0.4); }
+    .wire-box:hover { background-color: rgba(0, 255, 128, 0.1); box-shadow: 0 0 15px rgba(0, 255, 128, 0.8); }
+    #gif-display { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+    #gif-display img { width: 100%; height: 100%; object-fit: contain; }
+    .power-on { color: #00ff88; font-size: 18px; opacity: 0; animation: fadeIn 1s ease forwards; }
+    @keyframes fadeIn { to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <!-- 左上：Zepharion -->
+  <div class="section" id="top-left">
+    <div class="tv-frame">
+      <img src="https://kakinotane4455.github.io/star_2/g1.gif" alt="g1" class="resized-gif">
+      <div class="label">Zepharion</div>
+    </div>
+  </div>
+
+  <!-- 右上：3000-4000m -->
+  <div class="section" id="top-right">
+    <div class="tv-frame">
+      <img src="https://kakinotane4455.github.io/star_2/g2.gif" alt="g2" class="resized-gif">
+      <div class="label">3000-4000m</div>
+    </div>
+  </div>
+
+  <!-- 左下：Control Panel -->
+  <div class="section" id="bottom-left">
+    <div class="tv-frame">
+      <div id="box-container">
+        <div class="wire-box" onclick="showGif('g3')"></div>
+        <div class="wire-box" onclick="showGif('g4')"></div>
+        <div class="wire-box" onclick="showGif('g5')"></div>
+      </div>
+      <div class="label">Control Panel</div>
+    </div>
+  </div>
+
+  <!-- 右下：External Camera -->
+  <div class="section" id="bottom-right">
+    <div class="tv-frame">
+      <div id="gif-display">
+        <!-- 起動テキスト or GIF が入る -->
+      </div>
+      <div class="label">External Camera</div>
+    </div>
+  </div>
+
+  <script>
+    function showGif(gifName) {
+      const display = document.getElementById("gif-display");
+
+      const gifMap = {
+        g3: "https://kakinotane4455.github.io/star_3/g3.gif",
+        g4: "https://kakinotane4455.github.io/star_4/g4.gif",
+        g5: "https://kakinotane4455.github.io/star_5/g5.gif"
+      };
+
+      display.innerHTML = `<div class="power-on">Powering on...</div>`;
+
+      setTimeout(() => {
+        const gifURL = gifMap[gifName];
+        if (gifURL) {
+          display.innerHTML = `<img src="${gifURL}" alt="${gifName}" class="resized-gif">`;
+        } else {
+          display.innerHTML = `<div style="color:red;">GIF not found</div>`;
+        }
+      }, 1800);
+    }
+  </script>
+
+</body>
+</html>
